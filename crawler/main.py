@@ -1,20 +1,17 @@
-import requests
-from bs4 import BeautifulSoup
-import re
-import json
-import logging
-from elasticsearch import Elasticsearch
-from elasticsearch.helpers import bulk
-import time
-from urllib.parse import urljoin
+import os
 
-from chatbotAPI.Utils import get_es_client, logger
+from crawler.core.logger_factory import get_logger
+from crawler.repository.product_repository import ProductRepository
+from crawler.service.incidecoder_crawler_service import IncidecoderCrawler
 
 
 def main():
-    print("Hello CRAWLER")
-    es = get_es_client()
-    logger.info(es.info())
+    logger = get_logger()
+    product_repo = ProductRepository()
+    base_url = os.getenv("URL_INCIDECODER")
+    max_pages = os.getenv("MAX_PAGES")
+    ic_crawler = IncidecoderCrawler(logger, product_repo, base_url)
+    ic_crawler.run(max_pages)
 
 
 if __name__ == "__main__":
