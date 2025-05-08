@@ -24,6 +24,48 @@ class ProductRepository(ElasticsearchRepository):
     def delete_product(self, product_id: str):
         return self.delete(index=self.INDEX_NAME, id=product_id)
 
+    def _create_index(self):
+
+        # Định nghĩa cấu trúc mapping cho index
+        mapping = {
+            "mappings": {
+                "properties": {
+                    "name": {"type": "text", "fields": {"keyword": {"type": "keyword"}}},
+                    "aliases": {"type": "text"},
+                    "what_it_does": {"type": "text"},
+                    "irritancy": {"type": "keyword"},
+                    "comedogenicity": {"type": "keyword"},
+                    "hazard_level": {"type": "keyword"},
+                    "ewg_rating": {"type": "float"},
+                    "description": {"type": "text"},
+                    "functions": {"type": "keyword"},
+                    "url": {"type": "keyword"},
+                    "last_updated": {"type": "date"}
+                }
+            },
+            "settings": {
+                "analysis": {
+                    "analyzer": {
+                        "ingredient_analyzer": {
+                            "type": "custom",
+                            "tokenizer": "standard",
+                            "filter": ["lowercase", "asciifolding"]
+                        }
+                    }
+                }
+            }
+        }
+
+        try:
+            if not self.client.indices.exists(index=self.INGREDIENT_INDEX):
+                self.client.indices.create(index=self.INGREDIENT_INDEX, body=mapping)
+                self.logger.info(f"Đã tạo index '{self.INGREDIENT_INDEX}'")
+            else:
+                self.logger.info(f"Index '{self.INGREDIENT_INDEX}' đã tồn tại")
+        except Exception as e:
+            self.logger.error(f"Lỗi khi tạo index: {str(e)}")
+            raise
+
     def save_ingredients(self, data_list: list[dict]):
         """
         Lưu danh sách dữ liệu thành phần vào Elasticsearch.

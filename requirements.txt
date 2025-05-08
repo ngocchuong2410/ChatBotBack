@@ -1,0 +1,14 @@
+# Web crawler
+beautifulsoup4==4.12.2
+requests==2.31.0
+
+# API + NLP
+fastapi==0.95.0
+uvicorn==0.20.0
+spacy==3.6.0
+elasticsearch==8.0.0
+
+# Template rendering (nếu bạn dùng giao diện)
+jinja2==3.1.3
+
+numpy==1.23.5

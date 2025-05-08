@@ -7,7 +7,7 @@ class _LoggerFactory:
     _instance = None
     _lock = Lock()
 
-    def __new__(cls, name="comestic_crawler_app_logger", log_dir="logs", log_file="crawler.log"):
+    def __new__(cls, name="chatbotAPI_app_logger", log_dir="logs", log_file="ChatBotAPI.log"):
         if cls._instance is None:
             with cls._lock:
                 if cls._instance is None:
@@ -15,7 +15,7 @@ class _LoggerFactory:
                     cls._instance._initialized = False
         return cls._instance
 
-    def __init__(self, name="comestic_crawler_app_logger", log_dir="logs", log_file="crawler.log"):
+    def __init__(self, name="chatbotAPI_crawler_app_logger", log_dir="logs", log_file="ChatBotAPI.log"):
         if self._initialized:
             return
         self.name = name
