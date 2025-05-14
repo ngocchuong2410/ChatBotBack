@@ -8,8 +8,8 @@ from crawler.service.incidecoder_crawler_service import IncidecoderCrawler
 def main():
     logger = get_logger()
     product_repo = ProductRepository()
-    base_url = os.getenv("URL_INCIDECODER")
-    max_pages = os.getenv("MAX_PAGES")
+    base_url = os.getenv("URL_INCIDECODER", "https://incidecoder.com")
+    max_pages = os.getenv("MAX_PAGES", 10)
     ic_crawler = IncidecoderCrawler(logger, product_repo, base_url)
     ic_crawler.run(max_pages)
 

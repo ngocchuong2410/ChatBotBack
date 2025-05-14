@@ -2,7 +2,7 @@ import re
 
 from elasticsearch.helpers import bulk
 
-from es_repository import ElasticsearchRepository
+from crawler.repository.es_repository import ElasticsearchRepository
 
 
 class ProductRepository(ElasticsearchRepository):
