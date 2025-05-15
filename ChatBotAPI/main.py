@@ -21,9 +21,12 @@ product_repository = ProductRepository()
 async def chat_endpoint(request: ChatRequest = Body(...)):
     try:
         processed = nlp_service.process_text(request.query)
+        logger.info(processed)
         if not processed["ingredients"]:
+            logger.info("RUn into not found ingredients")
             return ChatResponse(answer="Không tìm thấy thành phần.", ingredients_found=[], confidence=0.0)
         results = await product_repository.search_ingredients(processed["ingredients"])
+        logger.info(results)
         answer = nlp_service.generate_response(processed["intent"], results, processed["original_text"])
         ingredients = [IngredientInfo(**r) for r in results]
         confidence = min(len(results) / len(processed["ingredients"]), 1.0)
